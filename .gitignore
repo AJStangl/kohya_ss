@@ -4,7 +4,8 @@ __pycache__
 *.egg-info
 build
 wd14_tagger_model
-
+my-scripts/prep-caption.py
+prepare-*
 # IDE and Editor specific
 .vscode
 
@@ -45,3 +46,10 @@ requirements_tmp_for_setup.txt
 
 *.npz
 presets/*/user_presets/*
+/models.db.bak
+/models.db.dat
+/models.db.dir
+/processed_dirs.db.bak
+/processed_dirs.db.dat
+/processed_dirs.db.dir
+/my-scripts/

@@ -130,6 +130,7 @@ def main(args):
 
             img_tensor, image_path = data
             if img_tensor is None:
+                raw_image = None
                 try:
                     raw_image = Image.open(image_path)
                     if raw_image.mode != "RGB":
@@ -138,6 +139,8 @@ def main(args):
                 except Exception as e:
                     print(f"Could not load image path / 画像を読み込めません: {image_path}, error: {e}")
                     continue
+                finally:
+                    raw_image.close()
 
             b_imgs.append((image_path, img_tensor))
             if len(b_imgs) >= args.batch_size:

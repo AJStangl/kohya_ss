@@ -26,7 +26,9 @@ CSV_FILE = FILES[-1]
 
 
 def preprocess_image(image):
-    image = np.array(image)
+    _image = image.copy()
+    image.close()
+    image = np.array(_image)
     image = image[:, :, ::-1]  # RGB->BGR
 
     # pad to square
@@ -47,6 +49,7 @@ def preprocess_image(image):
 class ImageLoadingPrepDataset(torch.utils.data.Dataset):
     def __init__(self, image_paths):
         self.images = image_paths
+
 
     def __len__(self):
         return len(self.images)
@@ -96,7 +99,10 @@ def main(args):
         print("using existing wd14 tagger model")
 
     # 画像を読み込む
+    # model = load_model(args.model_dir)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(args.model_dir)
+    model = model  # Move the model to the device
 
     # label_names = pd.read_csv("2022_0000_0899_6549/selected_tags.csv")
     # 依存ライブラリを増やしたくないので自力で読むよ
@@ -123,7 +129,6 @@ def main(args):
 
     def run_batch(path_imgs):
         imgs = np.array([im for _, im in path_imgs])
-
         probs = model(imgs, training=False)
         probs = probs.numpy()
 
